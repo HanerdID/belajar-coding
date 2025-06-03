@@ -1,4 +1,4 @@
-// src/pages/ModuleDetail.jsx
+// src/pages/ModuleDetail.jsx - Fix the duplicate keys
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
@@ -8,334 +8,286 @@ import {
   Typography,
   Button,
   Progress,
-  Collapse,
+  Avatar,
+  Rate,
+  Tag,
+  Divider,
   Tabs,
   List,
-  Tag,
-  Avatar,
-  Space,
-  Divider,
 } from "antd";
 import {
   ArrowLeft,
   Play,
-  CheckCircle,
-  Clock,
-  BookOpen,
-  Code2,
-  FileText,
-  Video,
   Download,
-  Star,
+  BookOpen,
+  Clock,
   Users,
+  Star,
+  CheckCircle,
+  FileText,
+  Code2,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
 const { Title, Text, Paragraph } = Typography;
-const { Panel } = Collapse;
-const { TabPane } = Tabs;
 
 const ModuleDetail = () => {
   const { id } = useParams();
-  const [activeLesson, setActiveLesson] = useState(1);
-  const [completedLessons, setCompletedLessons] = useState([1, 2, 3]);
+  const [currentLesson, setCurrentLesson] = useState(1);
+  const [completedLessons, setCompletedLessons] = useState([]);
 
-  // Mock data - dalam aplikasi nyata akan diambil dari API
+  // Mock data with FIXED duplicate keys
   const moduleData = {
     1: {
       id: 1,
-      title: "HTML Dasar",
+      title: "HTML Fundamentals",
       description:
-        "Pelajari struktur dasar website dan elemen-elemen HTML fundamental untuk membangun fondasi web development yang kuat.",
-      category: "html",
-      level: "Beginner",
-      duration: "4 jam",
-      lessons: 15,
-      students: 1250,
-      rating: 4.8,
-      progress: 100,
+        "Master the building blocks of web development with comprehensive HTML training covering semantic markup, accessibility, and modern best practices.",
       instructor: {
-        name: "Dr. Ahmad Fauzi",
-        avatar: "A",
-        title: "Senior Web Developer",
-        experience: "8+ tahun",
+        name: "Dr. Sarah Johnson",
+        avatar: "S",
+        bio: "Senior Frontend Developer with 8+ years experience at top tech companies.",
+        rating: 4.9,
       },
-      whatYouLearn: [
-        "Memahami struktur dasar dokumen HTML",
-        "Menguasai elemen-elemen HTML penting",
-        "Membuat form dan tabel yang functional",
-        "Mengoptimalkan HTML untuk SEO",
-        "Best practices dalam penulisan HTML",
-      ],
-      prerequisites: [
-        "Pemahaman dasar komputer",
-        "Text editor (VS Code recommended)",
-        "Browser modern (Chrome, Firefox, Safari)",
-      ],
+      duration: "4 weeks",
+      level: "Beginner",
+      price: "Free",
+      rating: 4.8,
+      studentsCount: 1247,
+      completionRate: 65,
+      category: "Frontend Development",
+      tags: ["HTML", "Web Development", "Semantic Markup", "Accessibility"],
+
+      // REMOVED DUPLICATE: Only keep one lessons array
       lessons: [
         {
           id: 1,
-          title: "Pengenalan HTML dan Web Development",
+          title: "Introduction to HTML",
+          duration: "15 min",
           type: "video",
-          duration: "15 menit",
-          isCompleted: true,
           description:
-            "Memahami apa itu HTML, sejarah web, dan peran HTML dalam web development",
-          resources: ["slides.pdf", "cheat-sheet.pdf"],
-        },
-        {
-          id: 2,
-          title: "Struktur Dasar Dokumen HTML",
-          type: "video",
-          duration: "20 menit",
-          isCompleted: true,
-          description:
-            "Mempelajari DOCTYPE, html, head, body, dan struktur dasar HTML",
-          resources: ["template.html", "example.html"],
-        },
-        {
-          id: 3,
-          title: "Text Elements dan Formatting",
-          type: "video",
-          duration: "25 menit",
-          isCompleted: true,
-          description:
-            "Heading, paragraph, emphasis, strong, dan elemen text lainnya",
-          resources: ["practice.html", "solution.html"],
-        },
-        {
-          id: 4,
-          title: "Links dan Navigation",
-          type: "video",
-          duration: "18 menit",
-          isCompleted: false,
-          description: "Membuat link internal, eksternal, dan navigasi website",
-          resources: ["navigation-template.html"],
-        },
-        {
-          id: 5,
-          title: "Images dan Media",
-          type: "video",
-          duration: "22 menit",
-          isCompleted: false,
-          description: "Menambahkan gambar, video, audio, dan optimasi media",
-          resources: ["images.zip", "media-guide.pdf"],
-        },
-        {
-          id: 6,
-          title: "Lists dan Tables",
-          type: "reading",
-          duration: "30 menit",
-          isCompleted: false,
-          description:
-            "Ordered list, unordered list, dan membuat tabel yang accessible",
-          resources: ["table-template.html", "list-examples.html"],
-        },
-        {
-          id: 7,
-          title: "Forms - Part 1: Input Elements",
-          type: "video",
-          duration: "35 menit",
-          isCompleted: false,
-          description: "Input types, textarea, select, dan form controls dasar",
-          resources: ["form-template.html"],
-        },
-        {
-          id: 8,
-          title: "Forms - Part 2: Validation & Accessibility",
-          type: "video",
-          duration: "28 menit",
-          isCompleted: false,
-          description:
-            "HTML5 validation, labels, fieldset, dan form accessibility",
-          resources: ["validation-examples.html", "accessibility-guide.pdf"],
-        },
-        {
-          id: 9,
-          title: "Semantic HTML Elements",
-          type: "video",
-          duration: "32 menit",
-          isCompleted: false,
-          description:
-            "Header, nav, main, section, article, aside, footer, dan semantic markup",
-          resources: ["semantic-template.html", "seo-guide.pdf"],
-        },
-        {
-          id: 10,
-          title: "HTML5 New Features",
-          type: "reading",
-          duration: "25 menit",
-          isCompleted: false,
-          description: "Canvas, SVG, video, audio, dan fitur HTML5 modern",
-          resources: ["html5-features.pdf", "examples.zip"],
-        },
-        {
-          id: 11,
-          title: "Meta Tags dan SEO Basics",
-          type: "video",
-          duration: "20 menit",
-          isCompleted: false,
-          description:
-            "Meta description, keywords, Open Graph, dan SEO fundamentals",
-          resources: ["meta-template.html", "seo-checklist.pdf"],
-        },
-        {
-          id: 12,
-          title: "Accessibility Best Practices",
-          type: "reading",
-          duration: "40 menit",
-          isCompleted: false,
-          description:
-            "ARIA labels, screen readers, dan membuat web yang accessible",
-          resources: ["accessibility-guide.pdf", "aria-examples.html"],
-        },
-        {
-          id: 13,
-          title: "HTML Validation dan Debugging",
-          type: "video",
-          duration: "15 menit",
-          isCompleted: false,
-          description:
-            "Menggunakan validator, debugging HTML, dan common mistakes",
-          resources: ["debugging-guide.pdf"],
-        },
-        {
-          id: 14,
-          title: "Project: Personal Portfolio Page",
-          type: "project",
-          duration: "60 menit",
-          isCompleted: false,
-          description:
-            "Membuat halaman portfolio pribadi menggunakan semua konsep yang dipelajari",
+            "Learn the basic structure of HTML documents and essential tags",
+          videoUrl: "https://example.com/video1.mp4",
           resources: [
-            "project-brief.pdf",
-            "starter-files.zip",
-            "design-mockup.jpg",
+            { name: "HTML Cheat Sheet", url: "#", type: "pdf" },
+            { name: "Code Examples", url: "#", type: "zip" },
           ],
         },
         {
-          id: 15,
-          title: "Review dan Next Steps",
-          type: "video",
-          duration: "10 menit",
-          isCompleted: false,
-          description: "Review materi, tips lanjutan, dan persiapan untuk CSS",
-          resources: ["next-steps.pdf", "resources-list.pdf"],
-        },
-      ],
-      reviews: [
-        {
-          id: 1,
-          user: { name: "Sarah Dewi", avatar: "S" },
-          rating: 5,
-          comment:
-            "Penjelasan sangat detail dan mudah dipahami. Perfect untuk pemula!",
-          date: "2 hari yang lalu",
-        },
-        {
           id: 2,
-          user: { name: "Budi Santoso", avatar: "B" },
-          rating: 5,
-          comment:
-            "Modul ini benar-benar membantu saya memahami HTML dari dasar. Recommended!",
-          date: "1 minggu yang lalu",
+          title: "HTML Document Structure",
+          duration: "20 min",
+          type: "video",
+          description: "Understanding DOCTYPE, head, and body elements",
+          videoUrl: "https://example.com/video2.mp4",
+          resources: [{ name: "Document Templates", url: "#", type: "zip" }],
         },
         {
           id: 3,
-          user: { name: "Maya Putri", avatar: "M" },
-          rating: 4,
+          title: "Text Elements and Formatting",
+          duration: "25 min",
+          type: "video",
+          description: "Headings, paragraphs, lists, and text formatting tags",
+          videoUrl: "https://example.com/video3.mp4",
+          resources: [
+            { name: "Text Formatting Examples", url: "#", type: "html" },
+          ],
+        },
+        {
+          id: 4,
+          title: "Links and Navigation",
+          duration: "18 min",
+          type: "video",
+          description: "Creating internal and external links, navigation menus",
+          videoUrl: "https://example.com/video4.mp4",
+          resources: [{ name: "Navigation Templates", url: "#", type: "zip" }],
+        },
+        {
+          id: 5,
+          title: "Images and Media",
+          duration: "22 min",
+          type: "video",
+          description: "Adding images, videos, and other media to web pages",
+          videoUrl: "https://example.com/video5.mp4",
+          resources: [
+            { name: "Media Examples", url: "#", type: "zip" },
+            { name: "Image Optimization Guide", url: "#", type: "pdf" },
+          ],
+        },
+      ],
+
+      requirements: [
+        "Basic computer skills",
+        "Text editor (VS Code recommended)",
+        "Web browser (Chrome, Firefox, Safari)",
+        "Eagerness to learn!",
+      ],
+
+      whatYouWillLearn: [
+        "HTML5 semantic elements and their proper usage",
+        "Document structure and organization",
+        "Forms, tables, and interactive elements",
+        "SEO-friendly markup techniques",
+        "Accessibility best practices",
+        "Modern HTML APIs and features",
+      ],
+
+      reviews: [
+        {
+          id: 1,
+          user: "Ahmad Rahman",
+          avatar: "A",
+          rating: 5,
           comment:
-            "Bagus, tapi mungkin bisa ditambah lebih banyak contoh praktik.",
+            "Excellent course! Very clear explanations and practical examples.",
           date: "2 minggu yang lalu",
+        },
+        {
+          id: 2,
+          user: "Maria Santos",
+          avatar: "M",
+          rating: 4,
+          comment: "Good content, but would love more interactive exercises.",
+          date: "1 minggu yang lalu",
         },
       ],
     },
+
     2: {
       id: 2,
-      title: "CSS Styling",
+      title: "CSS Mastery",
       description:
-        "Buat website yang menarik dengan styling CSS, layout, dan responsive design untuk berbagai perangkat.",
-      category: "css",
-      level: "Beginner",
-      duration: "6 jam",
-      lessons: 20,
-      students: 980,
-      rating: 4.9,
-      progress: 45,
+        "Transform your web designs with advanced CSS techniques, animations, and responsive design principles.",
       instructor: {
-        name: "Indira Sari",
-        avatar: "I",
-        title: "UI/UX Designer & Frontend Developer",
-        experience: "6+ tahun",
+        name: "Prof. Michael Chen",
+        avatar: "M",
+        bio: "CSS expert and design systems architect with 10+ years in frontend development.",
+        rating: 4.9,
       },
-      whatYouLearn: [
-        "Memahami CSS syntax dan selectors",
-        "Menguasai layout dengan Flexbox dan Grid",
-        "Membuat responsive design yang mobile-friendly",
-        "Mengimplementasikan animations dan transitions",
-        "CSS best practices dan methodology",
-      ],
-      prerequisites: [
-        "HTML Dasar (modul sebelumnya)",
-        "Pemahaman struktur file dan folder",
-        "Browser developer tools basics",
-      ],
+      duration: "6 weeks",
+      level: "Intermediate",
+      price: "Rp 299,000",
+      rating: 4.9,
+      studentsCount: 856,
+      completionRate: 72,
+      category: "Frontend Development",
+      tags: ["CSS", "Responsive Design", "Animations", "Flexbox", "Grid"],
+
+      // FIXED: Only one lessons array
       lessons: [
         {
           id: 1,
-          title: "CSS Fundamentals dan Syntax",
+          title: "CSS Fundamentals Review",
+          duration: "20 min",
           type: "video",
-          duration: "20 menit",
-          isCompleted: true,
-          description:
-            "Pengenalan CSS, cara menghubungkan dengan HTML, dan syntax dasar",
-          resources: ["css-basics.pdf", "starter-template.html"],
+          description: "Quick review of CSS basics and selectors",
+          videoUrl: "https://example.com/css1.mp4",
+          resources: [{ name: "CSS Reference Guide", url: "#", type: "pdf" }],
         },
-        // ... more lessons would be added here
+        {
+          id: 2,
+          title: "Advanced Selectors",
+          duration: "30 min",
+          type: "video",
+          description: "Pseudo-classes, pseudo-elements, and complex selectors",
+          videoUrl: "https://example.com/css2.mp4",
+          resources: [{ name: "Selector Examples", url: "#", type: "html" }],
+        },
+        {
+          id: 3,
+          title: "Flexbox Layout",
+          duration: "45 min",
+          type: "video",
+          description: "Master flexible box layout for modern web design",
+          videoUrl: "https://example.com/css3.mp4",
+          resources: [
+            { name: "Flexbox Cheat Sheet", url: "#", type: "pdf" },
+            { name: "Layout Examples", url: "#", type: "zip" },
+          ],
+        },
       ],
-      reviews: [],
+
+      requirements: [
+        "Basic HTML knowledge",
+        "Understanding of CSS basics",
+        "Code editor with CSS support",
+        "Modern web browser",
+      ],
+
+      whatYouWillLearn: [
+        "Advanced CSS selectors and specificity",
+        "Flexbox and CSS Grid layouts",
+        "CSS animations and transitions",
+        "Responsive design principles",
+        "CSS custom properties (variables)",
+        "Performance optimization techniques",
+      ],
+
+      reviews: [
+        {
+          id: 1,
+          user: "Lisa Wang",
+          avatar: "L",
+          rating: 5,
+          comment:
+            "Amazing depth of content. The animation examples are fantastic!",
+          date: "3 hari yang lalu",
+        },
+      ],
     },
   };
 
   const currentModule = moduleData[id] || moduleData[1];
-  const currentLesson = currentModule.lessons.find(
-    (lesson) => lesson.id === activeLesson
+  const currentLessonData = currentModule.lessons.find(
+    (lesson) => lesson.id === currentLesson
   );
 
-  const getTypeIcon = (type) => {
-    switch (type) {
-      case "video":
-        return <Video className="w-4 h-4" />;
-      case "reading":
-        return <FileText className="w-4 h-4" />;
-      case "project":
-        return <Code2 className="w-4 h-4" />;
-      default:
-        return <BookOpen className="w-4 h-4" />;
+  useEffect(() => {
+    // Load completed lessons from localStorage or API
+    const saved = localStorage.getItem(`module-${id}-progress`);
+    if (saved) {
+      setCompletedLessons(JSON.parse(saved));
+    }
+  }, [id]);
+
+  const handleLessonComplete = () => {
+    if (!completedLessons.includes(currentLesson)) {
+      const updated = [...completedLessons, currentLesson];
+      setCompletedLessons(updated);
+      localStorage.setItem(`module-${id}-progress`, JSON.stringify(updated));
     }
   };
 
-  const getTypeColor = (type) => {
-    switch (type) {
-      case "video":
-        return "blue";
-      case "reading":
+  const handleNextLesson = () => {
+    if (currentLesson < currentModule.lessons.length) {
+      setCurrentLesson(currentLesson + 1);
+    }
+  };
+
+  const handlePrevLesson = () => {
+    if (currentLesson > 1) {
+      setCurrentLesson(currentLesson - 1);
+    }
+  };
+
+  const progress =
+    (completedLessons.length / currentModule.lessons.length) * 100;
+
+  const getLevelColor = (level) => {
+    switch (level) {
+      case "Beginner":
         return "green";
-      case "project":
-        return "purple";
+      case "Intermediate":
+        return "orange";
+      case "Advanced":
+        return "red";
       default:
         return "default";
     }
   };
 
-  const handleLessonComplete = (lessonId) => {
-    if (!completedLessons.includes(lessonId)) {
-      setCompletedLessons([...completedLessons, lessonId]);
-    }
-  };
-
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-4 max-w-7xl">
       {/* Back Button */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -348,33 +300,125 @@ const ModuleDetail = () => {
           className="inline-flex items-center space-x-2 text-charcoal hover:text-dark transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Kembali ke Modul</span>
+          <span>Kembali ke Modules</span>
         </Link>
       </motion.div>
 
       <Row gutter={[24, 24]}>
+        {/* Sidebar - Lesson List */}
+        <Col xs={24} lg={8}>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="sticky top-24"
+          >
+            <Card
+              className="shadow-elegant"
+              style={{ maxHeight: "80vh", overflow: "auto" }}
+            >
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <Title level={4} style={{ color: "#07020D", margin: 0 }}>
+                    Course Progress
+                  </Title>
+                  <Text style={{ color: "#716A5C", fontSize: "0.9rem" }}>
+                    {completedLessons.length}/{currentModule.lessons.length}
+                  </Text>
+                </div>
+                <Progress
+                  percent={Math.round(progress)}
+                  strokeColor={{
+                    "0%": "#A39B8B",
+                    "100%": "#716A5C",
+                  }}
+                  size="small"
+                />
+              </div>
+
+              <Divider />
+
+              <div className="space-y-2">
+                <Title level={5} style={{ color: "#07020D", marginBottom: 16 }}>
+                  Lessons
+                </Title>
+                {currentModule.lessons.map((lesson) => (
+                  <motion.div
+                    key={lesson.id}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                      currentLesson === lesson.id
+                        ? "border-sage bg-sage bg-opacity-10"
+                        : "border-gray-200 hover:border-sage hover:bg-gray-50"
+                    }`}
+                    onClick={() => setCurrentLesson(lesson.id)}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                          completedLessons.includes(lesson.id)
+                            ? "bg-green-500 text-white"
+                            : currentLesson === lesson.id
+                            ? "bg-sage text-white"
+                            : "bg-gray-200 text-gray-600"
+                        }`}
+                      >
+                        {completedLessons.includes(lesson.id) ? (
+                          <CheckCircle className="w-4 h-4" />
+                        ) : (
+                          <span className="text-xs font-medium">
+                            {lesson.id}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <Text
+                          strong
+                          style={{
+                            color:
+                              currentLesson === lesson.id
+                                ? "#07020D"
+                                : "#716A5C",
+                            fontSize: "0.9rem",
+                          }}
+                        >
+                          {lesson.title}
+                        </Text>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <Clock className="w-3 h-3 text-gray-400" />
+                          <Text
+                            style={{ color: "#A39B8B", fontSize: "0.8rem" }}
+                          >
+                            {lesson.duration}
+                          </Text>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </Card>
+          </motion.div>
+        </Col>
+
         {/* Main Content */}
         <Col xs={24} lg={16}>
-          {/* Module Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="space-y-6"
           >
-            <Card className="shadow-elegant mb-6">
+            {/* Module Header */}
+            <Card className="shadow-elegant">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-3">
-                    <Tag color="blue">
-                      {currentModule.category.toUpperCase()}
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Tag color={getLevelColor(currentModule.level)}>
+                      {currentModule.level}
                     </Tag>
-                    <Tag color="green">{currentModule.level}</Tag>
-                    <div className="flex items-center space-x-1 text-yellow-500">
-                      <Star className="w-4 h-4 fill-current" />
-                      <span className="font-medium">
-                        {currentModule.rating}
-                      </span>
-                    </div>
+                    <Tag color="blue">{currentModule.category}</Tag>
                   </div>
                   <Title
                     level={2}
@@ -392,399 +436,320 @@ const ModuleDetail = () => {
                     {currentModule.description}
                   </Paragraph>
 
-                  <div className="flex flex-wrap items-center gap-6 text-sm text-charcoal">
-                    <div className="flex items-center space-x-1">
+                  <div className="flex flex-wrap items-center gap-6 text-sm">
+                    <div className="flex items-center space-x-1 text-charcoal">
                       <Clock className="w-4 h-4" />
                       <span>{currentModule.duration}</span>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <BookOpen className="w-4 h-4" />
-                      <span>{currentModule.lessons} lessons</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1 text-charcoal">
                       <Users className="w-4 h-4" />
-                      <span>{currentModule.students} students</span>
+                      <span>{currentModule.studentsCount} students</span>
+                    </div>
+                    <div className="flex items-center space-x-1 text-charcoal">
+                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      <span>{currentModule.rating}</span>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              {/* Progress */}
-              <div className="mb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <Text strong>Progress Pembelajaran</Text>
-                  <Text style={{ color: "#A39B8B", fontWeight: 600 }}>
-                    {completedLessons.length}/{currentModule.lessons} selesai
-                  </Text>
-                </div>
-                <Progress
-                  percent={Math.round(
-                    (completedLessons.length / currentModule.lessons) * 100
-                  )}
-                  strokeColor={{
-                    "0%": "#A39B8B",
-                    "100%": "#716A5C",
-                  }}
-                  trailColor="#F1E9DB"
-                />
-              </div>
-
-              {/* Instructor */}
-              <div className="flex items-center space-x-3 p-4 bg-cream rounded-lg">
-                <Avatar
-                  size={48}
-                  style={{
-                    background: "linear-gradient(135deg, #A39B8B, #716A5C)",
-                    color: "#F1E9DB",
-                    fontWeight: 600,
-                  }}
-                >
-                  {currentModule.instructor.avatar}
-                </Avatar>
-                <div>
-                  <Text strong style={{ color: "#07020D" }}>
-                    {currentModule.instructor.name}
-                  </Text>
-                  <Text
-                    style={{
-                      color: "#716A5C",
-                      display: "block",
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    {currentModule.instructor.title}
-                  </Text>
-                  <Text style={{ color: "#A39B8B", fontSize: "0.8rem" }}>
-                    {currentModule.instructor.experience}
-                  </Text>
                 </div>
               </div>
             </Card>
-          </motion.div>
 
-          {/* Lesson Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+            {/* Video Player / Content */}
             <Card className="shadow-elegant">
-              <Tabs defaultActiveKey="content" size="large">
-                <TabPane
-                  tab={
-                    <span className="flex items-center space-x-2">
-                      <Play className="w-4 h-4" />
-                      <span>Konten</span>
-                    </span>
-                  }
-                  key="content"
+              <div className="mb-4">
+                <Title level={3} style={{ color: "#07020D", marginBottom: 8 }}>
+                  {currentLessonData?.title}
+                </Title>
+                <Text style={{ color: "#716A5C", fontSize: "1rem" }}>
+                  {currentLessonData?.description}
+                </Text>
+              </div>
+
+              {/* Video Player Placeholder */}
+              <div
+                className="w-full h-96 bg-gray-900 rounded-lg flex items-center justify-center mb-4 relative overflow-hidden"
+                style={{
+                  background: "linear-gradient(135deg, #1a1a1a, #2d2d2d)",
+                  border: "2px solid #333",
+                }}
+              >
+                <div className="text-center text-white">
+                  <Play className="w-16 h-16 mx-auto mb-4 text-sage" />
+                  <Text style={{ color: "white", fontSize: "1.1rem" }}>
+                    {currentLessonData?.title}
+                  </Text>
+                  <Text style={{ color: "#ccc", fontSize: "0.9rem" }}>
+                    Duration: {currentLessonData?.duration}
+                  </Text>
+                </div>
+              </div>
+
+              {/* Lesson Navigation */}
+              <div className="flex items-center justify-between">
+                <Button
+                  onClick={handlePrevLesson}
+                  disabled={currentLesson === 1}
+                  style={{ borderRadius: 8 }}
                 >
-                  {currentLesson && (
-                    <div>
-                      <div className="flex items-center space-x-3 mb-4">
-                        <Tag
-                          color={getTypeColor(currentLesson.type)}
-                          icon={getTypeIcon(currentLesson.type)}
+                  Previous Lesson
+                </Button>
+
+                <div className="flex space-x-3">
+                  <Button
+                    type="primary"
+                    icon={<CheckCircle className="w-4 h-4" />}
+                    onClick={handleLessonComplete}
+                    disabled={completedLessons.includes(currentLesson)}
+                    style={{
+                      background: completedLessons.includes(currentLesson)
+                        ? "#28a745"
+                        : "linear-gradient(135deg, #10b981, #059669)",
+                      border: "none",
+                      borderRadius: 8,
+                    }}
+                  >
+                    {completedLessons.includes(currentLesson)
+                      ? "Completed"
+                      : "Mark Complete"}
+                  </Button>
+
+                  <Button
+                    onClick={handleNextLesson}
+                    disabled={currentLesson === currentModule.lessons.length}
+                    style={{ borderRadius: 8 }}
+                  >
+                    Next Lesson
+                  </Button>
+                </div>
+              </div>
+            </Card>
+
+            {/* Course Info Tabs */}
+            <Card className="shadow-elegant">
+              <Tabs
+                defaultActiveKey="resources"
+                size="large"
+                items={[
+                  {
+                    key: "resources",
+                    label: (
+                      <span className="flex items-center space-x-2">
+                        <Download className="w-4 h-4" />
+                        <span>Resources</span>
+                      </span>
+                    ),
+                    children: (
+                      <div>
+                        <Title
+                          level={4}
+                          style={{ color: "#07020D", marginBottom: 16 }}
                         >
-                          {currentLesson.type.toUpperCase()}
-                        </Tag>
-                        <div className="flex items-center space-x-1 text-sm text-charcoal">
-                          <Clock className="w-4 h-4" />
-                          <span>{currentLesson.duration}</span>
-                        </div>
-                      </div>
-
-                      <Title
-                        level={3}
-                        style={{ color: "#07020D", marginBottom: 12 }}
-                      >
-                        {currentLesson.title}
-                      </Title>
-
-                      <Paragraph
-                        style={{
-                          color: "#716A5C",
-                          fontSize: "1rem",
-                          marginBottom: 24,
-                        }}
-                      >
-                        {currentLesson.description}
-                      </Paragraph>
-
-                      {/* Video/Content Placeholder */}
-                      <div
-                        className="w-full h-64 bg-gradient-sage rounded-lg flex items-center justify-center mb-6"
-                        style={{
-                          background:
-                            "linear-gradient(135deg, #A39B8B20, #716A5C20)",
-                        }}
-                      >
-                        <div className="text-center">
-                          {getTypeIcon(currentLesson.type)}
-                          <Text
-                            style={{
-                              color: "#716A5C",
-                              marginTop: 8,
-                              display: "block",
-                            }}
-                          >
-                            {currentLesson.type === "video"
-                              ? "Video Player"
-                              : currentLesson.type === "reading"
-                              ? "Reading Content"
-                              : "Project Instructions"}
-                          </Text>
-                        </div>
-                      </div>
-
-                      {/* Resources */}
-                      {currentLesson.resources &&
-                        currentLesson.resources.length > 0 && (
-                          <div className="mb-6">
-                            <Title
-                              level={4}
-                              style={{ color: "#07020D", marginBottom: 12 }}
-                            >
-                              Resources
-                            </Title>
-                            <div className="space-y-2">
-                              {currentLesson.resources.map(
-                                (resource, index) => (
-                                  <div
-                                    key={index}
-                                    className="flex items-center justify-between p-3 bg-cream rounded-lg hover:bg-sage/10 transition-colors cursor-pointer"
-                                  >
-                                    <div className="flex items-center space-x-3">
-                                      <Download className="w-4 h-4 text-sage" />
-                                      <Text>{resource}</Text>
-                                    </div>
-                                    <Button type="text" size="small">
-                                      Download
-                                    </Button>
+                          Lesson Resources
+                        </Title>
+                        <List
+                          dataSource={currentLessonData?.resources || []}
+                          renderItem={(resource) => (
+                            <List.Item>
+                              <div className="flex items-center justify-between w-full">
+                                <div className="flex items-center space-x-3">
+                                  <FileText className="w-5 h-5 text-sage" />
+                                  <div>
+                                    <Text strong style={{ color: "#07020D" }}>
+                                      {resource.name}
+                                    </Text>
+                                    <br />
+                                    <Text
+                                      style={{
+                                        color: "#716A5C",
+                                        fontSize: "0.9rem",
+                                      }}
+                                    >
+                                      {resource.type.toUpperCase()} file
+                                    </Text>
                                   </div>
-                                )
-                              )}
-                            </div>
-                          </div>
-                        )}
-
-                      {/* Action Buttons */}
-                      <div className="flex justify-between items-center">
-                        <Button
-                          disabled={activeLesson === 1}
-                          onClick={() => setActiveLesson(activeLesson - 1)}
-                          style={{ borderRadius: 8 }}
-                        >
-                          Lesson Sebelumnya
-                        </Button>
-
-                        <div className="flex space-x-3">
-                          {!completedLessons.includes(activeLesson) && (
-                            <Button
-                              type="primary"
-                              icon={<CheckCircle className="w-4 h-4" />}
-                              onClick={() => handleLessonComplete(activeLesson)}
-                              style={{
-                                background:
-                                  "linear-gradient(135deg, #10b981, #059669)",
-                                border: "none",
-                                borderRadius: 8,
-                              }}
-                            >
-                              Tandai Selesai
-                            </Button>
+                                </div>
+                                <Button
+                                  type="primary"
+                                  icon={<Download className="w-4 h-4" />}
+                                  size="small"
+                                  style={{
+                                    background:
+                                      "linear-gradient(135deg, #A39B8B, #716A5C)",
+                                    border: "none",
+                                  }}
+                                >
+                                  Download
+                                </Button>
+                              </div>
+                            </List.Item>
                           )}
-
-                          <Button
-                            type="primary"
-                            disabled={
-                              activeLesson === currentModule.lessons.length
-                            }
-                            onClick={() => setActiveLesson(activeLesson + 1)}
-                            style={{
-                              background:
-                                "linear-gradient(135deg, #A39B8B, #716A5C)",
-                              border: "none",
-                              borderRadius: 8,
-                            }}
-                          >
-                            Lesson Selanjutnya
-                          </Button>
-                        </div>
+                        />
                       </div>
-                    </div>
-                  )}
-                </TabPane>
-
-                <TabPane
-                  tab={
-                    <span className="flex items-center space-x-2">
-                      <FileText className="w-4 h-4" />
-                      <span>Overview</span>
-                    </span>
-                  }
-                  key="overview"
-                >
-                  <div className="space-y-6">
-                    {/* What You'll Learn */}
-                    <div>
-                      <Title
-                        level={4}
-                        style={{ color: "#07020D", marginBottom: 16 }}
-                      >
-                        Apa yang akan Anda pelajari
-                      </Title>
-                      <List
-                        dataSource={currentModule.whatYouLearn}
-                        renderItem={(item) => (
-                          <List.Item
-                            style={{ border: "none", padding: "8px 0" }}
-                          >
-                            <div className="flex items-start space-x-3">
-                              <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                              <Text style={{ color: "#716A5C" }}>{item}</Text>
-                            </div>
-                          </List.Item>
-                        )}
-                      />
-                    </div>
-
-                    <Divider />
-
-                    {/* Prerequisites */}
-                    <div>
-                      <Title
-                        level={4}
-                        style={{ color: "#07020D", marginBottom: 16 }}
-                      >
-                        Prerequisites
-                      </Title>
-                      <List
-                        dataSource={currentModule.prerequisites}
-                        renderItem={(item) => (
-                          <List.Item
-                            style={{ border: "none", padding: "8px 0" }}
-                          >
-                            <div className="flex items-start space-x-3">
-                              <div className="w-2 h-2 bg-sage rounded-full mt-2 flex-shrink-0"></div>
-                              <Text style={{ color: "#716A5C" }}>{item}</Text>
-                            </div>
-                          </List.Item>
-                        )}
-                      />
-                    </div>
-                  </div>
-                </TabPane>
-
-                <TabPane
-                  tab={
-                    <span className="flex items-center space-x-2">
-                      <Star className="w-4 h-4" />
-                      <span>Reviews ({currentModule.reviews.length})</span>
-                    </span>
-                  }
-                  key="reviews"
-                >
-                  <div className="space-y-4">
-                    {currentModule.reviews.map((review) => (
-                      <div key={review.id} className="p-4 bg-cream rounded-lg">
-                        <div className="flex items-start space-x-3">
+                    ),
+                  },
+                  {
+                    key: "instructor",
+                    label: (
+                      <span className="flex items-center space-x-2">
+                        <Users className="w-4 h-4" />
+                        <span>Instructor</span>
+                      </span>
+                    ),
+                    children: (
+                      <div>
+                        <div className="flex items-start space-x-4">
                           <Avatar
+                            size={64}
                             style={{
                               background:
                                 "linear-gradient(135deg, #A39B8B, #716A5C)",
                               color: "#F1E9DB",
+                              fontSize: "1.5rem",
+                              fontWeight: 600,
                             }}
                           >
-                            {review.user.avatar}
+                            {currentModule.instructor.avatar}
                           </Avatar>
                           <div className="flex-1">
-                            <div className="flex items-center space-x-2 mb-2">
-                              <Text strong style={{ color: "#07020D" }}>
-                                {review.user.name}
-                              </Text>
-                              <div className="flex items-center space-x-1">
-                                {[...Array(review.rating)].map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    className="w-4 h-4 text-yellow-500 fill-current"
-                                  />
-                                ))}
-                              </div>
-                              <Text
-                                style={{ color: "#A39B8B", fontSize: "0.8rem" }}
-                              >
-                                {review.date}
+                            <Title
+                              level={4}
+                              style={{ color: "#07020D", marginBottom: 8 }}
+                            >
+                              {currentModule.instructor.name}
+                            </Title>
+                            <div className="flex items-center space-x-2 mb-3">
+                              <Rate
+                                disabled
+                                defaultValue={currentModule.instructor.rating}
+                              />
+                              <Text style={{ color: "#716A5C" }}>
+                                {currentModule.instructor.rating}/5.0
                               </Text>
                             </div>
-                            <Paragraph style={{ color: "#716A5C", margin: 0 }}>
-                              {review.comment}
+                            <Paragraph style={{ color: "#716A5C" }}>
+                              {currentModule.instructor.bio}
                             </Paragraph>
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </TabPane>
-              </Tabs>
-            </Card>
-          </motion.div>
-        </Col>
+                    ),
+                  },
+                  {
+                    key: "overview",
+                    label: (
+                      <span className="flex items-center space-x-2">
+                        <BookOpen className="w-4 h-4" />
+                        <span>Overview</span>
+                      </span>
+                    ),
+                    children: (
+                      <div className="space-y-6">
+                        <div>
+                          <Title
+                            level={4}
+                            style={{ color: "#07020D", marginBottom: 16 }}
+                          >
+                            What you'll learn
+                          </Title>
+                          <List
+                            dataSource={currentModule.whatYouWillLearn}
+                            renderItem={(item) => (
+                              <List.Item>
+                                <div className="flex items-start space-x-3">
+                                  <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                                  <Text style={{ color: "#716A5C" }}>
+                                    {item}
+                                  </Text>
+                                </div>
+                              </List.Item>
+                            )}
+                          />
+                        </div>
 
-        {/* Sidebar - Lesson List */}
-        <Col xs={24} lg={8}>
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <Card
-              title="Daftar Lesson"
-              className="shadow-elegant sticky top-24"
-              style={{ maxHeight: "80vh", overflow: "auto" }}
-            >
-              <div className="space-y-2">
-                {currentModule.lessons.map((lesson, index) => (
-                  <div
-                    key={lesson.id}
-                    onClick={() => setActiveLesson(lesson.id)}
-                    className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                      activeLesson === lesson.id
-                        ? "bg-sage text-cream"
-                        : "hover:bg-cream"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-medium">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        {getTypeIcon(lesson.type)}
-                        {completedLessons.includes(lesson.id) && (
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                        )}
+                        <Divider />
+
+                        <div>
+                          <Title
+                            level={4}
+                            style={{ color: "#07020D", marginBottom: 16 }}
+                          >
+                            Requirements
+                          </Title>
+                          <List
+                            dataSource={currentModule.requirements}
+                            renderItem={(item) => (
+                              <List.Item>
+                                <div className="flex items-start space-x-3">
+                                  <div className="w-2 h-2 bg-sage rounded-full mt-2 flex-shrink-0" />
+                                  <Text style={{ color: "#716A5C" }}>
+                                    {item}
+                                  </Text>
+                                </div>
+                              </List.Item>
+                            )}
+                          />
+                        </div>
                       </div>
-                      <Text
+                    ),
+                  },
+                ]}
+              />
+            </Card>
+
+            {/* Reviews */}
+            <Card
+              title={
+                <div className="flex items-center space-x-2">
+                  <Star className="w-5 h-5 text-yellow-400" />
+                  <span>Student Reviews</span>
+                </div>
+              }
+              className="shadow-elegant"
+            >
+              <div className="space-y-4">
+                {currentModule.reviews.map((review) => (
+                  <div
+                    key={review.id}
+                    className="p-4 border border-gray-200 rounded-lg"
+                  >
+                    <div className="flex items-start space-x-3">
+                      <Avatar
                         style={{
-                          color:
-                            activeLesson === lesson.id ? "#F1E9DB" : "#A39B8B",
-                          fontSize: "0.8rem",
+                          background:
+                            "linear-gradient(135deg, #A39B8B, #716A5C)",
+                          color: "#F1E9DB",
+                          fontWeight: 600,
                         }}
                       >
-                        {lesson.duration}
-                      </Text>
+                        {review.avatar}
+                      </Avatar>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <Text strong style={{ color: "#07020D" }}>
+                            {review.user}
+                          </Text>
+                          <Text
+                            style={{ color: "#A39B8B", fontSize: "0.9rem" }}
+                          >
+                            {review.date}
+                          </Text>
+                        </div>
+                        <Rate
+                          disabled
+                          defaultValue={review.rating}
+                          size="small"
+                        />
+                        <Paragraph
+                          style={{
+                            color: "#716A5C",
+                            marginTop: 8,
+                            marginBottom: 0,
+                          }}
+                        >
+                          {review.comment}
+                        </Paragraph>
+                      </div>
                     </div>
-                    <Text
-                      style={{
-                        color:
-                          activeLesson === lesson.id ? "#F1E9DB" : "#07020D",
-                        fontWeight: 500,
-                        display: "block",
-                        fontSize: "0.9rem",
-                      }}
-                    >
-                      {lesson.title}
-                    </Text>
                   </div>
                 ))}
               </div>
