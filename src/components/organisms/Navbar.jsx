@@ -1,21 +1,39 @@
+// src/components/organisms/Navbar.jsx
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "antd";
 import { LogIn, Menu, X } from "lucide-react";
 import Logo from "../atoms/Logo";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const Navbar = () => {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Throttled scroll handler untuk performa
+  const handleScroll = useCallback(() => {
+    const isScrolled = window.scrollY > 20;
+    if (isScrolled !== scrolled) {
+      setScrolled(isScrolled);
+    }
+  }, [scrolled]);
+
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    let ticking = false;
+    
+    const throttledScrollHandler = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+
+    window.addEventListener("scroll", throttledScrollHandler, { passive: true });
+    return () => window.removeEventListener("scroll", throttledScrollHandler);
+  }, [handleScroll]);
 
   const navItems = [
     { href: "#features", label: "Fitur" },
@@ -24,9 +42,17 @@ const Navbar = () => {
     { href: "#kontak", label: "Kontak" },
   ];
 
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen(prev => !prev);
+  }, []);
+
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+  }, []);
+
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-500 ${
+      className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled ? "shadow-elegant" : ""
       }`}
       style={{
@@ -48,10 +74,10 @@ const Navbar = () => {
                 <a
                   key={index}
                   href={item.href}
-                  className="text-charcoal hover:text-dark transition-all duration-300 font-medium relative group"
+                  className="text-charcoal hover:text-dark transition-colors duration-200 font-medium relative group"
                 >
                   {item.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300"></span>
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-200"></span>
                 </a>
               ))}
             </nav>
@@ -63,8 +89,7 @@ const Navbar = () => {
                 size="middle"
                 className="btn-primary"
                 style={{
-                  background:
-                    "linear-gradient(135deg, #07020D 0%, #716A5C 100%)",
+                  background: "linear-gradient(135deg, #07020D 0%, #716A5C 100%)",
                   color: "#F1E9DB",
                   fontWeight: "600",
                   border: "none",
@@ -81,8 +106,9 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 rounded-lg hover:bg-cream transition-colors duration-300"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden p-2 rounded-lg hover:bg-cream transition-colors duration-200"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6 text-dark" />
@@ -100,21 +126,20 @@ const Navbar = () => {
                 <a
                   key={index}
                   href={item.href}
-                  className="text-charcoal hover:text-dark transition-colors duration-300 font-medium py-2"
-                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-charcoal hover:text-dark transition-colors duration-200 font-medium py-2"
+                  onClick={closeMobileMenu}
                 >
                   {item.label}
                 </a>
               ))}
-              <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+              <Link to="/login" onClick={closeMobileMenu}>
                 <Button
                   type="primary"
                   icon={<LogIn />}
                   block
                   className="btn-primary mt-4"
                   style={{
-                    background:
-                      "linear-gradient(135deg, #07020D 0%, #716A5C 100%)",
+                    background: "linear-gradient(135deg, #07020D 0%, #716A5C 100%)",
                     color: "#F1E9DB",
                     fontWeight: "600",
                     border: "none",

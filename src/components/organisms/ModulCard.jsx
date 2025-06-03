@@ -1,15 +1,34 @@
+// src/components/organisms/ModulCard.jsx
 import { Card, Typography, Progress, Button } from "antd";
 import { Clock, BookOpen, Play } from "lucide-react";
 import { motion } from "framer-motion";
+import { useMemo } from "react";
 const { Title, Text } = Typography;
 
 const ModulCard = ({ modul, index }) => {
+  const cardVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: 30 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: 0.5,
+          delay: index * 0.08,
+          ease: "easeOut",
+        },
+      },
+    }),
+    [index]
+  );
+
   return (
     <motion.div
-      initial={{ y: 80, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -8 }}
+      variants={cardVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-30px" }}
+      whileHover={{ y: -6, transition: { duration: 0.2 } }}
     >
       <Card
         hoverable
@@ -25,8 +44,8 @@ const ModulCard = ({ modul, index }) => {
         {/* Header dengan Icon */}
         <div className="text-center mb-6">
           <motion.div
-            whileHover={{ scale: 1.1, rotate: 10 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
             style={{
               fontSize: 56,
               marginBottom: 16,
@@ -116,26 +135,32 @@ const ModulCard = ({ modul, index }) => {
         </div>
 
         {/* Action Button */}
-        <Button
-          type="primary"
-          block
-          icon={<Play className="w-4 h-4" />}
-          style={{
-            background:
-              modul.progress > 0
-                ? "linear-gradient(135deg, #A39B8B, #716A5C)"
-                : "linear-gradient(135deg, #07020D, #716A5C)",
-            color: "#F1E9DB",
-            border: "none",
-            borderRadius: "12px",
-            height: "44px",
-            fontWeight: "600",
-            fontSize: "0.95rem",
-            boxShadow: "0 4px 15px rgba(7, 2, 13, 0.15)",
-          }}
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.1 }}
         >
-          {modul.progress > 0 ? "Lanjutkan" : "Mulai Belajar"}
-        </Button>
+          <Button
+            type="primary"
+            block
+            icon={<Play className="w-4 h-4" />}
+            style={{
+              background:
+                modul.progress > 0
+                  ? "linear-gradient(135deg, #A39B8B, #716A5C)"
+                  : "linear-gradient(135deg, #07020D, #716A5C)",
+              color: "#F1E9DB",
+              border: "none",
+              borderRadius: "12px",
+              height: "44px",
+              fontWeight: "600",
+              fontSize: "0.95rem",
+              boxShadow: "0 4px 15px rgba(7, 2, 13, 0.15)",
+            }}
+          >
+            {modul.progress > 0 ? "Lanjutkan" : "Mulai Belajar"}
+          </Button>
+        </motion.div>
       </Card>
     </motion.div>
   );

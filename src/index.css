@@ -1,5 +1,11 @@
+/* src/index.css - Tambahkan optimizations */
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
+
+/* Enable hardware acceleration untuk animasi */
+* {
+  will-change: auto;
+}
 
 body {
   font-family: "Rubik", sans-serif;
@@ -8,11 +14,20 @@ body {
   line-height: 1.6;
 }
 
-/* Custom utility classes dengan kombinasi warna baru */
+/* Reduced motion untuk aksesibilitas */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Optimized button animations */
 .btn {
   border-radius: 0.75rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -20,6 +35,7 @@ body {
   padding: 12px 24px;
   border: none;
   cursor: pointer;
+  will-change: transform;
 }
 
 .btn-primary {
@@ -28,103 +44,29 @@ body {
   box-shadow: 0 4px 15px rgba(7, 2, 13, 0.2);
 }
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(7, 2, 13, 0.3);
-  background: linear-gradient(135deg, #07020D 0%, #534C40 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(7, 2, 13, 0.3);
 }
 
-.btn-secondary {
-  background: linear-gradient(135deg, #A39B8B 0%, #716A5C 100%);
-  color: #F1E9DB;
-  box-shadow: 0 4px 15px rgba(163, 155, 139, 0.2);
-}
-.btn-secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(163, 155, 139, 0.3);
-  background: linear-gradient(135deg, #958D7D 0%, #635C50 100%);
-}
-
-.btn-outline {
-  background-color: transparent;
-  border: 2px solid #07020D;
-  color: #07020D;
-  box-shadow: 0 4px 15px rgba(7, 2, 13, 0.1);
-}
-.btn-outline:hover {
-  background-color: #07020D;
-  color: #F1E9DB;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(7, 2, 13, 0.2);
-}
-
-.btn-ghost {
-  background-color: rgba(241, 233, 219, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(241, 233, 219, 0.2);
-  color: #07020D;
-}
-.btn-ghost:hover {
-  background-color: rgba(241, 233, 219, 0.2);
-  transform: translateY(-2px);
-}
-
+/* Optimized card styles */
 .card {
   background: linear-gradient(145deg, #FFFFFF 0%, #F1E9DB 100%);
   border-radius: 1rem;
   box-shadow: 
     0 10px 30px rgba(7, 2, 13, 0.08),
     0 4px 8px rgba(7, 2, 13, 0.04);
-  transition: all 0.4s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   border: 1px solid rgba(163, 155, 139, 0.1);
   overflow: hidden;
   position: relative;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #07020D 0%, #A39B8B 50%, #716A5C 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.card:hover::before {
-  opacity: 1;
+  will-change: transform;
 }
 
 .card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-4px);
   box-shadow: 
-    0 20px 40px rgba(7, 2, 13, 0.12),
-    0 8px 16px rgba(7, 2, 13, 0.08);
-}
-
-.card-dark {
-  background: linear-gradient(145deg, #07020D 0%, #1a1219 100%);
-  color: #F1E9DB;
-  border: 1px solid rgba(241, 233, 219, 0.1);
-}
-
-.card-sage {
-  background: linear-gradient(145deg, #A39B8B 0%, #958D7D 100%);
-  color: #F1E9DB;
-}
-
-/* Gradient backgrounds */
-.bg-gradient-primary {
-  background: linear-gradient(135deg, #07020D 0%, #716A5C 100%);
-}
-
-.bg-gradient-secondary {
-  background: linear-gradient(135deg, #F1E9DB 0%, #A39B8B 100%);
-}
-
-.bg-gradient-sage {
-  background: linear-gradient(135deg, #A39B8B 0%, #716A5C 100%);
+    0 15px 35px rgba(7, 2, 13, 0.12),
+    0 6px 12px rgba(7, 2, 13, 0.08);
 }
 
 /* Text colors */
@@ -154,25 +96,16 @@ body {
   color: #F1E9DB;
 }
 
-/* Enhanced shadow utilities */
+/* Simplified shadows */
 .shadow-elegant {
-  box-shadow: 
-    0 10px 30px rgba(7, 2, 13, 0.1),
-    0 4px 8px rgba(7, 2, 13, 0.05);
+  box-shadow: 0 4px 12px rgba(7, 2, 13, 0.1);
 }
 
 .shadow-elegant-hover {
-  box-shadow: 
-    0 20px 40px rgba(7, 2, 13, 0.15),
-    0 8px 16px rgba(7, 2, 13, 0.1);
+  box-shadow: 0 8px 20px rgba(7, 2, 13, 0.15);
 }
 
-/* Smooth animations */
-* {
-  transition: color 0.3s ease, background-color 0.3s ease;
-}
-
-/* Custom scrollbar */
+/* Optimized scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -182,10 +115,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #A39B8B, #716A5C);
+  background: #A39B8B;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #716A5C, #07020D);
+  background: #716A5C;
 }

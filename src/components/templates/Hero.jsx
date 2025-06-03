@@ -1,3 +1,4 @@
+// src/components/templates/Hero.jsx
 import { Row, Col, Typography, Button, Space } from "antd";
 import { Link } from "react-router-dom";
 import {
@@ -10,15 +11,58 @@ import {
 } from "lucide-react";
 import { COLORS } from "../../constants/theme";
 import { motion } from "framer-motion";
+import { useMemo } from "react";
 const { Title, Paragraph } = Typography;
 
 const Hero = () => {
+  // Memoize variants untuk mencegah re-creation
+  const containerVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: {
+          staggerChildren: 0.1,
+          delayChildren: 0.2,
+        },
+      },
+    }),
+    []
+  );
+
+  const itemVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: 20 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.5, ease: "easeOut" },
+      },
+    }),
+    []
+  );
+
+  // Simplified floating animation
+  const floatingVariants = useMemo(
+    () => ({
+      float: {
+        y: [-8, 8, -8],
+        transition: {
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        },
+      },
+    }),
+    []
+  );
+
   return (
     <div className="section-light relative overflow-hidden">
-      {/* Background Decorations */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-sage rounded-full opacity-10 blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-primary rounded-full opacity-10 blur-3xl"></div>
+      {/* Background decorations - simplified */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-sage rounded-full opacity-5 blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-primary rounded-full opacity-5 blur-3xl"></div>
       </div>
 
       <div className="container mx-auto px-4 py-12 relative">
@@ -26,15 +70,13 @@ const Hero = () => {
           {/* Text Content */}
           <Col xs={24} md={14}>
             <motion.div
-              initial={{ x: -100, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8 }}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
             >
               <Space direction="vertical" size="large">
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
+                  variants={itemVariants}
                   className="inline-flex items-center px-6 py-3 rounded-full font-semibold mb-6 shadow-elegant"
                   style={{
                     background:
@@ -46,11 +88,7 @@ const Hero = () => {
                   <span>Platform #1 untuk Belajar Coding</span>
                 </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                >
+                <motion.div variants={itemVariants}>
                   <Title
                     level={1}
                     style={{
@@ -76,11 +114,7 @@ const Hero = () => {
                   </Title>
                 </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 }}
-                >
+                <motion.div variants={itemVariants}>
                   <Paragraph
                     style={{
                       color: COLORS.CHARCOAL,
@@ -96,15 +130,12 @@ const Hero = () => {
                   </Paragraph>
                 </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.9 }}
-                >
+                <motion.div variants={itemVariants}>
                   <Space wrap size="large" style={{ marginBottom: "3rem" }}>
                     <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
                     >
                       <Button
                         type="primary"
@@ -128,8 +159,9 @@ const Hero = () => {
                     </motion.div>
 
                     <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
                     >
                       <Button
                         type="default"
@@ -154,9 +186,7 @@ const Hero = () => {
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.1 }}
+                  variants={itemVariants}
                   className="flex flex-wrap items-center gap-8 text-sm"
                   style={{ color: COLORS.CHARCOAL }}
                 >
@@ -174,12 +204,8 @@ const Hero = () => {
                   </div>
                 </motion.div>
 
-                {/* Statistics */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.3 }}
-                >
+                {/* Statistics - simplified animation */}
+                <motion.div variants={itemVariants}>
                   <Row gutter={32} style={{ marginTop: 48 }}>
                     <Col>
                       <Title
@@ -250,18 +276,18 @@ const Hero = () => {
             </motion.div>
           </Col>
 
-          {/* Image/Animation */}
+          {/* Image/Animation - Significantly simplified */}
           <Col xs={24} md={10}>
             <motion.div
-              initial={{ x: 100, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className="relative"
             >
-              {/* Floating Elements */}
+              {/* Floating Elements - reduced animation complexity */}
               <motion.div
-                animate={{ y: [-15, 15, -15] }}
-                transition={{ duration: 6, repeat: Infinity }}
+                variants={floatingVariants}
+                animate="float"
                 className="absolute -top-6 -left-6 p-4 rounded-2xl shadow-elegant-hover z-10"
                 style={{
                   background: "linear-gradient(135deg, #f59e0b, #d97706)",
@@ -271,11 +297,12 @@ const Hero = () => {
               </motion.div>
 
               <motion.div
-                animate={{ y: [15, -15, 15] }}
-                transition={{ duration: 4, repeat: Infinity }}
+                variants={floatingVariants}
+                animate="float"
                 className="absolute -top-4 -right-8 p-4 rounded-2xl shadow-elegant-hover z-10"
                 style={{
                   background: "linear-gradient(135deg, #10b981, #059669)",
+                  animationDelay: "2s",
                 }}
               >
                 <Trophy className="w-8 h-8 text-white" />
@@ -299,7 +326,7 @@ const Hero = () => {
                       <div className="w-3 h-3 bg-green-400 rounded-full"></div>
                     </div>
                     <div className="flex-1 bg-white rounded-lg px-4 py-2 text-sm text-gray-500 border">
-                      belajarngoding.com
+                      belajar-ngoding-beta.vercel.app
                     </div>
                   </div>
 
@@ -341,7 +368,13 @@ const Hero = () => {
                           5
                         </span>
                         <span className="text-blue-400">&lt;/html&gt;</span>
-                        <span className="animate-pulse text-white">|</span>
+                        <motion.span
+                          className="text-white"
+                          animate={{ opacity: [1, 0, 1] }}
+                          transition={{ duration: 1, repeat: Infinity }}
+                        >
+                          |
+                        </motion.span>
                       </div>
                     </div>
                   </div>

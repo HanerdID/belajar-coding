@@ -1,24 +1,52 @@
+// src/layouts/MainLayout.jsx
 import { Outlet } from "react-router-dom";
 import { Layout, Typography, Row, Col } from "antd";
-import Navbar from "../components/organisms/Navbar";
-import Logo from "../components/atoms/Logo";
+import { Suspense, lazy } from "react";
 import { Code, MessageCircle, Users } from "lucide-react";
+import Logo from "../components/atoms/Logo";
 
 const { Footer, Content } = Layout;
 const { Text, Link: ALink } = Typography;
 
+// Lazy load Navbar untuk initial load yang lebih cepat
+const Navbar = lazy(() => import("../components/organisms/Navbar"));
+
+// Loading component yang ringan
+const NavbarSkeleton = () => (
+  <div className="sticky top-0 z-50 bg-cream shadow-elegant">
+    <div className="container mx-auto px-4 py-4">
+      <div className="flex justify-between items-center">
+        <Logo variant="dark" />
+        <div className="hidden lg:flex items-center space-x-8">
+          <div className="flex space-x-8">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="w-16 h-4 bg-gray-200 rounded animate-pulse"
+              ></div>
+            ))}
+          </div>
+          <div className="w-20 h-10 bg-gray-200 rounded animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 const MainLayout = () => {
   return (
     <Layout style={{ minHeight: "100vh", background: "#F1E9DB" }}>
-      {/* Navbar */}
-      <Navbar />
+      {/* Lazy loaded Navbar with fallback */}
+      <Suspense fallback={<NavbarSkeleton />}>
+        <Navbar />
+      </Suspense>
 
       {/* Main Content */}
       <Content>
         <Outlet />
       </Content>
 
-      {/* Footer */}
+      {/* Simplified Footer - removed unnecessary animations */}
       <Footer className="section-dark" style={{ padding: "48px 24px 24px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <Row gutter={[32, 32]}>
@@ -39,13 +67,13 @@ const MainLayout = () => {
 
               <div className="flex space-x-4 mt-6">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110"
+                  className="w-12 h-12 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105"
                   style={{ background: "rgba(241, 233, 219, 0.1)" }}
                 >
                   <Users className="w-5 h-5" style={{ color: "#F1E9DB" }} />
                 </div>
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110"
+                  className="w-12 h-12 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105"
                   style={{ background: "rgba(241, 233, 219, 0.1)" }}
                 >
                   <MessageCircle
@@ -54,7 +82,7 @@ const MainLayout = () => {
                   />
                 </div>
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110"
+                  className="w-12 h-12 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105"
                   style={{ background: "rgba(241, 233, 219, 0.1)" }}
                 >
                   <Code className="w-5 h-5" style={{ color: "#F1E9DB" }} />
@@ -75,63 +103,27 @@ const MainLayout = () => {
                 Pembelajaran
               </Text>
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                <li style={{ marginBottom: 12 }}>
-                  <ALink
-                    href="#"
-                    style={{
-                      color: "rgba(241, 233, 219, 0.8)",
-                      fontSize: "0.95rem",
-                      transition: "color 0.3s ease",
-                    }}
-                    className="hover:text-cream"
-                  >
-                    HTML Dasar
-                  </ALink>
-                </li>
-                <li style={{ marginBottom: 12 }}>
-                  <ALink
-                    href="#"
-                    style={{
-                      color: "rgba(241, 233, 219, 0.8)",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    CSS Styling
-                  </ALink>
-                </li>
-                <li style={{ marginBottom: 12 }}>
-                  <ALink
-                    href="#"
-                    style={{
-                      color: "rgba(241, 233, 219, 0.8)",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    JavaScript
-                  </ALink>
-                </li>
-                <li style={{ marginBottom: 12 }}>
-                  <ALink
-                    href="#"
-                    style={{
-                      color: "rgba(241, 233, 219, 0.8)",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    Project Portfolio
-                  </ALink>
-                </li>
-                <li>
-                  <ALink
-                    href="#"
-                    style={{
-                      color: "rgba(241, 233, 219, 0.8)",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    Web Development
-                  </ALink>
-                </li>
+                {[
+                  "HTML Dasar",
+                  "CSS Styling",
+                  "JavaScript",
+                  "Project Portfolio",
+                  "Web Development",
+                ].map((item, index) => (
+                  <li key={index} style={{ marginBottom: 12 }}>
+                    <ALink
+                      href="#"
+                      style={{
+                        color: "rgba(241, 233, 219, 0.8)",
+                        fontSize: "0.95rem",
+                        transition: "color 0.2s ease",
+                      }}
+                      className="hover:text-cream"
+                    >
+                      {item}
+                    </ALink>
+                  </li>
+                ))}
               </ul>
             </Col>
 
@@ -148,61 +140,26 @@ const MainLayout = () => {
                 Support
               </Text>
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                <li style={{ marginBottom: 12 }}>
-                  <ALink
-                    href="#"
-                    style={{
-                      color: "rgba(241, 233, 219, 0.8)",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    Help Center
-                  </ALink>
-                </li>
-                <li style={{ marginBottom: 12 }}>
-                  <ALink
-                    href="#"
-                    style={{
-                      color: "rgba(241, 233, 219, 0.8)",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    Contact Us
-                  </ALink>
-                </li>
-                <li style={{ marginBottom: 12 }}>
-                  <ALink
-                    href="#"
-                    style={{
-                      color: "rgba(241, 233, 219, 0.8)",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    FAQ
-                  </ALink>
-                </li>
-                <li style={{ marginBottom: 12 }}>
-                  <ALink
-                    href="#"
-                    style={{
-                      color: "rgba(241, 233, 219, 0.8)",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    Blog
-                  </ALink>
-                </li>
-                <li>
-                  <ALink
-                    href="#"
-                    style={{
-                      color: "rgba(241, 233, 219, 0.8)",
-                      fontSize: "0.95rem",
-                    }}
-                  >
-                    Career Guide
-                  </ALink>
-                </li>
+                {[
+                  "Help Center",
+                  "Contact Us",
+                  "FAQ",
+                  "Blog",
+                  "Career Guide",
+                ].map((item, index) => (
+                  <li key={index} style={{ marginBottom: 12 }}>
+                    <ALink
+                      href="#"
+                      style={{
+                        color: "rgba(241, 233, 219, 0.8)",
+                        fontSize: "0.95rem",
+                        transition: "color 0.2s ease",
+                      }}
+                    >
+                      {item}
+                    </ALink>
+                  </li>
+                ))}
               </ul>
 
               <div style={{ marginTop: 24 }}>
@@ -214,7 +171,7 @@ const MainLayout = () => {
                     lineHeight: "1.6",
                   }}
                 >
-                  info@belajarngoding.com
+                  info@belajarngoding
                   <br />
                   +62 21 1234 5678
                 </Text>
@@ -242,33 +199,21 @@ const MainLayout = () => {
                 </p>
               </div>
               <div className="flex space-x-6 text-sm">
-                <ALink
-                  href="#"
-                  style={{
-                    color: "rgba(241, 233, 219, 0.6)",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  Privacy Policy
-                </ALink>
-                <ALink
-                  href="#"
-                  style={{
-                    color: "rgba(241, 233, 219, 0.6)",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  Terms of Service
-                </ALink>
-                <ALink
-                  href="#"
-                  style={{
-                    color: "rgba(241, 233, 219, 0.6)",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  Cookie Policy
-                </ALink>
+                {["Privacy Policy", "Terms of Service", "Cookie Policy"].map(
+                  (item, index) => (
+                    <ALink
+                      key={index}
+                      href="#"
+                      style={{
+                        color: "rgba(241, 233, 219, 0.6)",
+                        fontSize: "0.9rem",
+                        transition: "color 0.2s ease",
+                      }}
+                    >
+                      {item}
+                    </ALink>
+                  )
+                )}
               </div>
             </div>
           </div>

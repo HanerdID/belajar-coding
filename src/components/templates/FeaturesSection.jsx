@@ -1,7 +1,10 @@
+// src/components/templates/FeaturesSection.jsx
 import { Row, Col } from "antd";
 import SectionHeader from "../molecules/SectionHeader";
 import FeatureCard from "../organisms/FeatureCard";
 import { BookOpen, Code, MessageCircle, Trophy } from "lucide-react";
+import { motion } from "framer-motion";
+import { useMemo } from "react";
 
 const features = [
   {
@@ -39,6 +42,20 @@ const features = [
 ];
 
 const FeaturesSection = () => {
+  const containerVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: {
+          staggerChildren: 0.1,
+          delayChildren: 0.2,
+        },
+      },
+    }),
+    []
+  );
+
   return (
     <section
       id="features"
@@ -50,13 +67,20 @@ const FeaturesSection = () => {
           title="Kenapa Pilih BelajarNgoding?"
           subtitle="Platform pembelajaran coding terlengkap dengan metode yang telah terbukti membantu ribuan siswa sukses"
         />
-        <Row gutter={[32, 32]}>
-          {features.map((feature, index) => (
-            <Col key={feature.id} xs={24} sm={12} lg={6}>
-              <FeatureCard feature={feature} index={index} />
-            </Col>
-          ))}
-        </Row>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <Row gutter={[32, 32]}>
+            {features.map((feature, index) => (
+              <Col key={feature.id} xs={24} sm={12} lg={6}>
+                <FeatureCard feature={feature} index={index} />
+              </Col>
+            ))}
+          </Row>
+        </motion.div>
       </div>
     </section>
   );

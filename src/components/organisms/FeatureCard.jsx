@@ -1,14 +1,34 @@
+// src/components/organisms/FeatureCard.jsx
 import { Card, Typography } from "antd";
 import { motion } from "framer-motion";
+import { useMemo } from "react";
 const { Title, Paragraph } = Typography;
 
 const FeatureCard = ({ feature, index }) => {
+  // Memoize variants
+  const cardVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0, y: 30 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: 0.5,
+          delay: index * 0.1,
+          ease: "easeOut",
+        },
+      },
+    }),
+    [index]
+  );
+
   return (
     <motion.div
-      initial={{ y: 80, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
-      whileHover={{ y: -12 }}
+      variants={cardVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-50px" }}
+      whileHover={{ y: -8, transition: { duration: 0.2 } }}
     >
       <Card
         hoverable
@@ -22,8 +42,8 @@ const FeatureCard = ({ feature, index }) => {
         className="card shadow-elegant"
       >
         <motion.div
-          whileHover={{ scale: 1.1, rotate: 5 }}
-          transition={{ type: "spring", stiffness: 300 }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
           style={{
             fontSize: 48,
             marginBottom: 24,
